@@ -26,26 +26,31 @@ export class ExpenseTrackerDatabase extends Dexie {
 
 export const db = new ExpenseTrackerDatabase();
 
+// Handle database open failures gracefully (common in private/incognito tabs on mobile)
+db.open().catch((err) => {
+  console.error('Failed to open local IndexedDB:', err);
+});
+
 export async function seedInitialDataIfNeeded() {
   try {
-    const txCount = await db.transactions.count();
+    const txCount = await db.transactions.count().catch(() => 0);
     if (txCount === 0) {
-      await db.transactions.bulkPut(INITIAL_TRANSACTIONS);
+      await db.transactions.bulkPut(INITIAL_TRANSACTIONS).catch(() => {});
     }
 
-    const catCount = await db.categories.count();
+    const catCount = await db.categories.count().catch(() => 0);
     if (catCount === 0) {
-      await db.categories.bulkPut(DEFAULT_CATEGORIES);
+      await db.categories.bulkPut(DEFAULT_CATEGORIES).catch(() => {});
     }
 
-    const budgetCount = await db.budgets.count();
+    const budgetCount = await db.budgets.count().catch(() => 0);
     if (budgetCount === 0) {
-      await db.budgets.put({ id: 'main_budget', ...DEFAULT_BUDGETS });
+      await db.budgets.put({ id: 'main_budget', ...DEFAULT_BUDGETS }).catch(() => {});
     }
 
-    const settingsCount = await db.settings.count();
+    const settingsCount = await db.settings.count().catch(() => 0);
     if (settingsCount === 0) {
-      await db.settings.put({ id: 'main_settings', ...DEFAULT_SETTINGS });
+      await db.settings.put({ id: 'main_settings', ...DEFAULT_SETTINGS }).catch(() => {});
     }
   } catch (error) {
     console.error('Error seeding initial database data:', error);

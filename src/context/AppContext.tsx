@@ -121,7 +121,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (firebaseUser) {
         // Check migration
         const isMigrated = await storageService.checkUserMigrationStatus(firebaseUser.uid);
-        const localTxCount = await db.transactions.count();
+        const localTxCount = await db.transactions.count().catch(() => 0);
         if (!isMigrated && localTxCount > 0) {
           setShowMigrationPrompt(true);
         } else if (!isMigrated) {
