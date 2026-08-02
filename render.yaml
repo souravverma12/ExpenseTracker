@@ -3,7 +3,7 @@ services:
     name: apex-finance-tracker
     runtime: static
     buildCommand: npm install && npm run build
-    publishPath: dist
+    publishDir: dist
     headers:
       - path: /*
         name: Cache-Control
