@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // User Profile Rules
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Transaction Rules - User must be owner
+    match /transactions/{transactionId} {
+      allow read, write: if request.auth != null && resource == null || (resource != null && resource.data.uid == request.auth.uid) || (request.resource != null && request.resource.data.uid == request.auth.uid);
+    }
+    
+    // Custom Categories Rules
+    match /categories/{categoryId} {
+      // Allow reading system default categories (uid == 'system') or user-owned custom ones
+      allow read: if request.auth != null && (resource.data.uid == 'system' || resource.data.uid == request.auth.uid);
+      allow write: if request.auth != null && (request.resource.data.uid == request.auth.uid || (resource != null && resource.data.uid == request.auth.uid));
+    }
+    
+    // Budgets Rules
+    match /budgets/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Settings Rules
+    match /settings/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
