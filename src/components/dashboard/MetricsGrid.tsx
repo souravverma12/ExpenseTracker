@@ -1,14 +1,14 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
-  Calendar, 
-  CalendarDays, 
-  CalendarRange, 
-  TrendingUp, 
-  Wallet, 
-  PiggyBank, 
   Clock, 
-  Percent 
+  CalendarDays, 
+  Calendar, 
+  Percent,
+  CalendarRange,
+  TrendingUp,
+  Wallet,
+  PiggyBank
 } from 'lucide-react';
 
 export const MetricsGrid: React.FC = () => {
@@ -92,24 +92,24 @@ export const MetricsGrid: React.FC = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
       {cards.map((card, idx) => {
         const Icon = card.icon;
         return (
           <div
             key={idx}
-            className="glass-card glass-card-hover p-4 rounded-2xl flex flex-col justify-between"
+            className="glass-card glass-card-hover p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold text-slate-400 tracking-tight">{card.title}</span>
-              <div className={`p-2 rounded-xl border ${card.bgColor}`}>
-                <Icon className={`w-4 h-4 ${card.color}`} />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] sm:text-xs font-semibold text-slate-400 tracking-tight">{card.title}</span>
+              <div className={`p-1.5 sm:p-2 rounded-xl border ${card.bgColor} shrink-0`}>
+                <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: 'inherit' }} />
               </div>
             </div>
             <div>
-              <div className="text-xl font-bold text-slate-100 tracking-tight">{card.value}</div>
+              <div className="text-base sm:text-xl font-bold text-slate-100 tracking-tight">{card.value}</div>
               {card.subtitle && (
-                <div className="text-[11px] text-slate-400 mt-1 font-medium">{card.subtitle}</div>
+                <div className="text-[9px] sm:text-[11px] text-slate-400 mt-0.5 font-medium">{card.subtitle}</div>
               )}
             </div>
           </div>
